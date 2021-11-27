@@ -1,0 +1,37 @@
+        //this will take a txt file from stdin and create a 2d int array 
+        File file = new File(args[0]);
+        Scanner scanner = new Scanner(file);
+        String pieces = scanner.nextLine(); 
+        if(pieces.contains("*")) {
+            //we may choose any number of given pieces
+        }
+        String stringmap = "";
+        String s = "";
+        int rows = 0;
+        int col = 0;
+        while(scanner.hasNext()) {
+            s = scanner.next();
+            col = s.length();
+            rows++;
+            stringmap = stringmap + s;
+        }
+        int[][] mapz = new int [col][rows];
+        int j1 = 0;
+        for(int i = 0; i < stringmap.length()-1; i++) {
+            if(i%col == 0 && i != 0) {
+                j1++;
+                System.out.println();
+            }
+            switch(stringmap.charAt(i)) {
+                case '.':
+                    mapz[i%col][j1] = 0;
+                    break;
+                case '*':
+                    mapz[i%col][j1] = 2;
+                    break;
+                default:
+                    break;
+
+            }
+            System.out.print(mapz[i%col][j1]);
+        }

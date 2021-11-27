@@ -1,0 +1,49 @@
+Overview --> to summarize our pentamenoes representation and the general overview of the problem:
+	1). Our program gets input of the puzzle map:
+		(a). Eg: [3x20]
+					*..................*
+					....................
+					*..................*
+	2). Then Across this map we slide "every possible pentomino shape" (i.e. each pentamenoes pieace and then it's all possible "reflections" and rotations).
+		[So in total we will have: (12_pentomenoes_shapes)*(4_reflections_per_piece)*(4_rotations_per_piece). 
+		Also it will be less as some shapes are immune to rotations/reflections as for example "X" pentomino  piece. Hence in reality there will be 63 unique orientations (incl. rotations/reflections) ]
+		(a). Eg. we slide it (i.e. each of this possible shapes) from left to right, top to bottom. Each time we move a piece accross the puzzle map we record it's coordinates.
+			 However, we will ignore any coordinates if a shape goes outides of the puzzle map or covers forbidden corrdinates (ie. blocks with *)
+			 For example, here coordinates will be recorded like this for pentomino  piece "F" (aka "R" if we use Conway notation): 
+			 
+													Coordinates Overview [row, column]:		(3x20 map)	
+					*11................*						(0,0)(0,1)(0,2) ....... (0,18)(0,19)
+					11..................						(1,0)(1,1)(1,2) ....... (1,18)(1,19)
+					*1.................*						(2,0)(2,1)(2,2) ....... (2,18)(2,19)					
+					
+							
+				==> [add this as a row to the matrix (which represents all shapes and all possible(allowed) positions on this puzzle map) ]:  	
+				
+						[All possible pshapes] 	[total: ~12x4x4 approx!]			[ all blocks/squares on the puzzle map] (total: 3x20=60 blocks)
+				|<-----------------Which_Pentomino_Piece_it_is--------------------------->|     |<-----------Which_squre/block_on_the_map_this_pieace_occupies------->}
+				... F_MormaOrientation ... F_NormalOrient_Mirrored ... Z_Normal_Rotated ... 	(0,0)   (0,1)	(0,2) .... (1,0)   (1,1) ... (2,1)  .....................................(2,18)(2,19)
+					1				0	 		0		  0	  1	  1	     1	     1	       1					   0	  0
+					
+	3). Therefore, after each pentomino piece slide we will get another row, etc.
+	4). And then we will repeat this for other "every possible pentomino shapeS", hence adding even more rows.
+	5). Wnen we will finish going over all possible pentomino shapes variants (incl. reflections/rotations) we will get our final matrix whcih will represent
+		all possible pieces shapes and their all possible locations on averay possible block on the puzzle map. 
+		[This will be very sparse matrix mostly containing 0s and some 1s.]
+		[Matix for "3x20 map" will have 1236 rows]
+	6). Next step is to use this matrix with the "Algorithm X" to solve this Exact cover problem --> i.e. find only those combinations of rows where all our piaeces
+		fit on the puzzle map without overlapping with each other. Hence we need to select only those rows 
+		which together contain exactly one 1 in each column. Hence, it will find a solution for the pentominoes puzzle where all pieces are used.
+		[Since according to Exact cover problem, the condition is that each "pentomino peace can accupy ONLY ONE square/block in the puzzle map" AND 
+		also "each block in the puzzle map MUST contain only one pentominoes peace". Hence, we need to select only those rows which when combined together 
+		will have ONLY one 1 their columns of the matrix:
+		(a). Eg. [NOTE: there is ONLY 1 in each column, hence our "solution matrix" will look simillar to this]
+		|<-----------------Which_Pentomino_Piece_it_is--------------------------->|        |<-----------Which_squre/block_on_the_map_this_pieace_occupies------->}
+				L_Normal F_MormaOrientation  F_NormalOrient_Mirrored  Z_Normal_Rotated  	(0,0)   (0,1)	(0,2)	(1,0)   (1,1)	(2,1)	(2,18)	(2,19)
+				   1		0			0		0			  1 	  0 	  0	  0	  0    	  0	  0	   1
+				   0		1			0		0			  0 	  1 	  0	  0	  0    	  0	  1	   0
+				   0		0			1		0			  0 	  0 	  1	  0	  0    	  1	  0	   0
+				   0		0			0		1			  0 	  0 	  0	  1	  1    	  0	  0	   0			
+		
+	7). Notes: _____
+	8). ===END===
+					
